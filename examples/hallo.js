@@ -81,7 +81,6 @@
         this.element.off("focus", this._activated);
         this.element.off("blur", this._deactivated);
         this.element.off("keyup paste change", this._checkModified);
-        this.element.off("keyup", this._keys);
         this.element.off("keyup mouseup", this._checkSelection);
         this.bound = false;
         jQuery(this.element).removeClass('isModified');
@@ -125,7 +124,6 @@
           this.element.on("focus", this, this._activated);
           this.element.on("blur", this, this._deactivated);
           this.element.on("keyup paste change", this, this._checkModified);
-          this.element.on("keyup", this, this._keys);
           this.element.on("keyup mouseup", this, this._checkSelection);
           this.bound = true;
         }
@@ -308,21 +306,6 @@
         widget = event.data;
         if (widget.isModified()) {
           return widget.setModified();
-        }
-      },
-      _keys: function(event) {
-        var old, widget;
-
-        widget = event.data;
-        if (event.keyCode === 27) {
-          old = widget.getContents();
-          widget.restoreOriginalContent(event);
-          widget._trigger("restored", null, {
-            editable: widget,
-            content: widget.getContents(),
-            thrown: old
-          });
-          return widget.turnOff();
         }
       },
       _rangesEqual: function(r1, r2) {
@@ -1826,7 +1809,7 @@
             editable: _this.options.editable,
             label: label,
             command: "insert" + type + "List",
-            icon: "icon-list-" + (label.toLowerCase()),
+            icon: label === 'OL' ? 'icon-numbered-list' : 'icon-list',
             cssClass: _this.options.buttonCssClass
           });
           return buttonset.append(buttonElement);
@@ -1966,7 +1949,7 @@
             uuid: _this.options.uuid,
             editable: _this.options.editable,
             label: label,
-            icon: cmd === 'undo' ? 'icon-undo' : 'icon-repeat',
+            icon: cmd === 'undo' ? 'icon-undo' : 'icon-redo',
             command: cmd,
             queryState: false,
             cssClass: _this.options.buttonCssClass

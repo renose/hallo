@@ -21,7 +21,7 @@
           editable: @options.editable
           label: label
           command: "insert#{type}List"
-          icon: "icon-list-#{label.toLowerCase()}"
+          icon: if label is 'OL' then 'icon-numbered-list' else 'icon-list'
           cssClass: @options.buttonCssClass
         buttonset.append buttonElement
 

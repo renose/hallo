@@ -150,7 +150,6 @@ http://hallojs.org
       @element.off "focus", @_activated
       @element.off "blur", @_deactivated
       @element.off "keyup paste change", @_checkModified
-      @element.off "keyup", @_keys
       @element.off "keyup mouseup", @_checkSelection
       @bound = false
 
@@ -185,7 +184,6 @@ http://hallojs.org
         @element.on "focus", this, @_activated
         @element.on "blur", this, @_deactivated
         @element.on "keyup paste change", this, @_checkModified
-        @element.on "keyup", this, @_keys
         @element.on "keyup mouseup", this, @_checkSelection
         @bound = true
 
@@ -333,18 +331,6 @@ http://hallojs.org
     _checkModified: (event) ->
       widget = event.data
       widget.setModified() if widget.isModified()
-
-    _keys: (event) ->
-      widget = event.data
-      if event.keyCode == 27
-        old = widget.getContents()
-        widget.restoreOriginalContent(event)
-        widget._trigger "restored", null,
-          editable: widget
-          content: widget.getContents()
-          thrown: old
-
-        widget.turnOff()
 
     _rangesEqual: (r1, r2) ->
       return false unless r1.startContainer is r2.startContainer
